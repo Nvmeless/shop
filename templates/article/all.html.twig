@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des Articles mon criss!{% endblock %}
+
+{% block body %}
+
+<div>
+    <ul>
+        {% for i in range(low=1,high=10, step= 1) %}
+        {# <li>Nouvelle Ligne {{article[i]->title}}</li> #}
+        {% endfor %}
+    </ul>
+
+
+</div>
+
+
+{% endblock %}
