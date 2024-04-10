@@ -6,8 +6,10 @@
 
 <div>
     <ul>
-        {% for i in range(low=1,high=10, step= 1) %}
-        {# <li>Nouvelle Ligne {{article[i]->title}}</li> #}
+        {% for article in articles %}
+                    <a href="/article/{{article.id}}">
+                        <li>#{{article.id}} - {{article.title}}</li>
+                    </a>
         {% endfor %}
     </ul>
 

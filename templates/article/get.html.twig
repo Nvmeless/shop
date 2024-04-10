@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des Articles mon criss!{% endblock %}
+
+{% block body %}
+
+<br>
+   ID: {{article.id}} </br>
+   title: {{article.title}} </br>
+   status: {{article.status}} </br>
+   created date: {{article.createdAt|date(timezone="Europe/Paris")}} </br>
+update date: {{article.updatedAt|date(timezone="Europe/Paris")}} </br>
+
+
+</div>
+
+
+{% endblock %}
