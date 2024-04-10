@@ -20,7 +20,19 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
-
+    /**
+    * @return Article[] Returns an array of Article objects
+    */
+    public function findByStatusOn(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.status = :val')
+            ->setParameter('val', "on")
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     //    /**
     //     * @return Article[] Returns an array of Article objects
     //     */
@@ -43,6 +55,6 @@ class ArticleRepository extends ServiceEntityRepository
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()
-    //        ;
+    //        ; 
     //    }
 }

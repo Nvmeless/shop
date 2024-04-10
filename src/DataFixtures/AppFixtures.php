@@ -34,9 +34,11 @@ class AppFixtures extends Fixture
         $categories = [];
 
         for ($i=0; $i < 5 ; $i++) { 
+            $name =$this->faker->realText($maxNbChars=10, $indexSize = 2);
             $createdDate = $this->faker->dateTimeBetween('-1 year', 'now');
             $category = new Category();
-            $category->setName($this->faker->realText($maxNbChars=255, $indexSize = 2))
+            $category->setName($name)
+            ->setSlug($name)
             ->setStatus("on")
             ->setCreatedAt($createdDate)
             ->setUpdatedAt($this->faker->dateTimeBetween($createdDate, 'now'));

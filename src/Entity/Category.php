@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -33,6 +34,9 @@ class Category
      */
     #[ORM\ManyToMany(targetEntity: Article::class, inversedBy: 'categories')]
     private Collection $articles;
+
+    #[ORM\Column(length: 25)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -111,6 +115,20 @@ class Category
     public function removeArticle(Article $article): static
     {
         $this->articles->removeElement($article);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $slugger = new AsciiSlugger();
+        $slug = $slugger->slug($slug);
+        $this->slug = strtolower($slug);
 
         return $this;
     }

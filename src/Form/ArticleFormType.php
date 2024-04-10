@@ -16,19 +16,20 @@ class ArticleFormType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('status')
-            ->add('updatedAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
+            // ->add('status')
+            // ->add('updatedAt', null, [
+            //     'widget' => 'single_text',
+            // ])
+            // ->add('createdAt', null, [
+            //     'widget' => 'single_text',
+            // ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
+                "expanded" => true
             ])
-            ->add("save", SubmitType::class, ['label' => "Create Article"])
+            ->add("save", SubmitType::class, ['label' =>$options["save_button_label"]])
         ;
     }
 
@@ -36,6 +37,7 @@ class ArticleFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Article::class,
+            "save_button_label" => "Envoyer",
         ]);
     }
 }
