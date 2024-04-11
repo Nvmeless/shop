@@ -3,12 +3,14 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
+use App\Entity\User;
 use Faker\Generator;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Category;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -19,17 +21,38 @@ class AppFixtures extends Fixture
      * @var Generator
      */
     private Generator $faker;
-
-    public function __construct(){
+/**
+ * Undocumented variable
+ *
+ * @var UserPasswordHasherInterface
+ */
+    private UserPasswordHasherInterface $userPasswordHasher;
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher){
         $this->faker = Factory::create("fr_FR");
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
 
     public function load(ObjectManager $manager): void
     {
 
-
-
+        $users = [];
+        for ($i=0; $i < 10 ; $i++) { 
+            $user = new User();
+            $password = $this->faker->password(2, 6);
+            $user->setUsername($this->faker->userName() . "@" . $password)
+            ->setRoles(["ROLE_USER"])
+            ->setPassword($this->userPasswordHasher->hashPassword($user, $password))
+            ;
+            $manager->persist($user);
+        }
+        $user = new User();
+        $password = "password";
+        $user->setUsername("admin")
+        ->setRoles(["ROLE_ADMIN"])
+        ->setPassword($this->userPasswordHasher->hashPassword($user, $password))
+        ;
+        $manager->persist($user);
 
         $categories = [];
 

@@ -10,6 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -83,7 +86,11 @@ class ArticleController extends AbstractController
         ]);
 
     }
-    #[Route('/article/{id}', name: 'article.get')]
+    #[Route('/article/get/{id}', name: 'article.get')]
+    // #[IsGranted("ROLE_ADMIN")]
+#[IsGranted(new Expression(
+        '"ROLE_ADMIN" in role_names or "ROLE_MODO" in role_names',
+    ))]
     public function get(int $id,ArticleRepository $articleRepository): Response
     {
              return $this->render('article/get.html.twig', [

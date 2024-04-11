@@ -33,7 +33,7 @@ class CategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_category_show', ['id' => $category->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('category/new.html.twig', [
@@ -68,7 +68,7 @@ class CategoryController extends AbstractController
         ]);
     }
     #[Route('/{slug}/articles', name: 'app_category_get_articles', methods: ['GET'])]
-    public function getArticles(Request $request, Category $category): Response
+    public function getArticles(Category $category): Response
     {
 
         return $this->render('article/all.html.twig', [
