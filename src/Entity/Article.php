@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -17,10 +18,11 @@ class Article
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length( min:5, max:10 , minMessage: "Votre titre doit faire au moins {{ limit }} caractere")]
     private ?string $title = null;
 
 
-    private $toto = "tata";
+
 
     #[ORM\Column(length: 25)]
     private ?string $status = null;

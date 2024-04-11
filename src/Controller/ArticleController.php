@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Article;
 use App\Form\ArticleFormType;
 use Doctrine\ORM\EntityManager;
@@ -41,7 +42,7 @@ class ArticleController extends AbstractController
     $article = new Article();
      $form = $this->createForm(ArticleFormType::class,$article, ["save_button_label" => "Creer un Article"]);
      $form->handleRequest($request);
-     if($form->isSubmitted()){
+     if($form->isSubmitted() && $form->isValid()){
         $today = new \DateTime();
 
         $article = $form->getData();
@@ -68,7 +69,7 @@ class ArticleController extends AbstractController
     $article = $articleRepository->find($id);
      $form = $this->createForm(ArticleFormType::class,$article, ["save_button_label" => "Creer un Article"]);
      $form->handleRequest($request);
-     if($form->isSubmitted()){
+     if($form->isSubmitted() && $form->isValid()){
         $today = new \DateTime();
 
         $article = $form->getData();
@@ -89,11 +90,11 @@ class ArticleController extends AbstractController
     #[Route('/article/get/{id}', name: 'article.get')]
     // #[IsGranted("ROLE_ADMIN")]
 #[IsGranted(new Expression(
-        '"ROLE_ADMIN" in role_names or "ROLE_MODO" in role_names',
+        '"ROLE_ADMIN" in role_names or "ROLE_USER" in role_names',
     ))]
     public function get(int $id,ArticleRepository $articleRepository): Response
     {
-             return $this->render('article/get.html.twig', [
+        return $this->render('article/get.html.twig', [
             'article' => $articleRepository->find($id),
         ]);
     }
