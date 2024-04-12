@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CustomUploadedFile index{% endblock %}
+
+{% block body %}
+    <h1>CustomUploadedFile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Status</th>
+                <th>FileName</th>
+                <th>MimeType</th>
+                <th>FileSize</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for custom_uploaded_file in custom_uploaded_files %}
+            <tr>
+                <td>{{ custom_uploaded_file.id }}</td>
+                <td>{{ custom_uploaded_file.createdAt ? custom_uploaded_file.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ custom_uploaded_file.updatedAt ? custom_uploaded_file.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ custom_uploaded_file.status }}</td>
+                <td>{{ custom_uploaded_file.fileName }}</td>
+                <td>{{ custom_uploaded_file.mimeType }}</td>
+                <td>{{ custom_uploaded_file.fileSize }}</td>
+                <td>
+                    <a href="{{ path('app_custom_uploaded_file_show', {'id': custom_uploaded_file.id}) }}">show</a>
+                    <a href="{{ path('app_custom_uploaded_file_edit', {'id': custom_uploaded_file.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_custom_uploaded_file_new') }}">Create new</a>
+{% endblock %}

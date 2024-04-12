@@ -7,7 +7,7 @@
 <div>
     <ul>
         {% for article in articles %}
-                    <a href="/article/{{article.id}}">
+                    <a href="{{article.link}}">
                         <li>#{{article.id}} - {{article.title}}</li>
                     </a>
         {% endfor %}

@@ -22,7 +22,7 @@ class Article
     private ?string $title = null;
 
 
-
+    public ?string $link = null;
 
     #[ORM\Column(length: 25)]
     private ?string $status = null;

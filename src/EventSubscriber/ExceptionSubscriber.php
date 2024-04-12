@@ -37,7 +37,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             ];
         }
 
-        $event->setResponse(new Response ($this->twig->render('error.html.twig', $data), $data["status"]));
+        // $event->setResponse(new Response ($this->twig->render('error.html.twig', $data), $data["status"]));
     }
 
     public static function getSubscribedEvents(): array

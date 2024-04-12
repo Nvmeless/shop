@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CustomUploadedFile{% endblock %}
+
+{% block body %}
+    <h1>CustomUploadedFile</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ custom_uploaded_file.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ custom_uploaded_file.createdAt ? custom_uploaded_file.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ custom_uploaded_file.updatedAt ? custom_uploaded_file.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ custom_uploaded_file.status }}</td>
+            </tr>
+            <tr>
+                <th>FileName</th>
+                <td>{{ custom_uploaded_file.fileName }}</td>
+            </tr>
+            <tr>
+                <th>MimeType</th>
+                <td>{{ custom_uploaded_file.mimeType }}</td>
+            </tr>
+            <tr>
+                <th>FileSize</th>
+                <td>{{ custom_uploaded_file.fileSize }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_custom_uploaded_file_index') }}">back to list</a>
+
+    <a href="{{ path('app_custom_uploaded_file_edit', {'id': custom_uploaded_file.id}) }}">edit</a>
+
+    {{ include('custom_uploaded_file/_delete_form.html.twig') }}
+{% endblock %}

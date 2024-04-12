@@ -15,7 +15,9 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class ArticleController extends AbstractController
 {
@@ -28,15 +30,31 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/articles', name: 'article.getAll')]
-    public function getAll(ArticleRepository $articleRepository): Response
+    public function getAll(ArticleRepository $articleRepository, UrlGeneratorInterface $urlGenerator, TagAwareCacheInterface $cache): Response
     {
+
+      
+    
+        $idCache = "article.getAll";
+        $cachedArticles = $cache->get($idCache, function (ItemInterface $item) use ($articleRepository, $urlGenerator) {
+            $item->tag('articles');
+            //...
+
+            $articles = $articleRepository->findByStatusOn();
+            foreach ($articles as   $article) {
+                $article->link = $urlGenerator->generate("article.get", ["id" => $article->getId()]);
+            }
+            echo "Mise en cache";
+            return $articles;
+        });
+
         // https://github.com/Nvmeless/shop
         return $this->render('article/all.html.twig', [
-            'articles' => $articleRepository->findByStatusOn(),
+            'articles' => $cachedArticles,
         ]);
     }
     #[Route('/article/new', name: 'article.create')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TagAwareCacheInterface $cache): Response
     {
 
     $article = new Article();
@@ -52,6 +70,7 @@ class ArticleController extends AbstractController
         $article->setCreatedAt($today)->setUpdatedAt( $today )->setStatus("on");
         $entityManager->persist($article);
         $entityManager->flush();
+        $cache->invalidateTags(["articles"]);
         return $this->redirectToRoute("article.get", ["id" => $article->getId()], Response::HTTP_CREATED);
      }
     //  $article->setTitle("Nouvel Article")->setStatus("on")->setCreatedAt($today)->setUpdatedAt($today);

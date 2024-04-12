@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CustomUploadedFile{% endblock %}
+
+{% block body %}
+    <h1>Edit CustomUploadedFile</h1>
+
+    {{ include('custom_uploaded_file/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_custom_uploaded_file_index') }}">back to list</a>
+
+    {{ include('custom_uploaded_file/_delete_form.html.twig') }}
+{% endblock %}

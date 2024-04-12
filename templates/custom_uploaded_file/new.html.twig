@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CustomUploadedFile{% endblock %}
+
+{% block body %}
+    <h1>Create new CustomUploadedFile</h1>
+
+    {{ include('custom_uploaded_file/_form.html.twig') }}
+
+    <a href="{{ path('app_custom_uploaded_file_index') }}">back to list</a>
+{% endblock %}
